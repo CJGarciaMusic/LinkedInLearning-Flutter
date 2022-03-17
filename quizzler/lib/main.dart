@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'question.dart';
+import 'quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+
+QuizBrain quizBrain = QuizBrain();
 
 void main() {
   runApp(const Quizzler());
@@ -33,15 +36,38 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Widget> scoreKeeper = [];
-  List<Question> questionBank = [
-    Question(q: 'You can lead a cow down stairs but not up stairs.', a: false),
-    Question(
-        q: 'Approximately one quarter of human bones are in the feet.',
-        a: true),
-    Question(q: 'A slug\'s blood is green.', a: true)
-  ];
 
-  int questionNum = 0;
+  void checkAnswer(bool userPickedAnswer) {
+    bool correctAnswer = quizBrain.getQuestionAnswer();
+    bool isComplete = quizBrain.isFinished();
+    setState(() {
+      if (isComplete) {
+        Alert(
+          context: context,
+          title: "ALERT",
+          desc: "Looks Like you're all done!",
+        ).show();
+        scoreKeeper = [];
+      } else {
+        if (userPickedAnswer == correctAnswer) {
+          scoreKeeper.add(
+            const Icon(
+              Icons.check,
+              color: Colors.green,
+            ),
+          );
+        } else {
+          scoreKeeper.add(
+            const Icon(
+              Icons.close,
+              color: Colors.red,
+            ),
+          );
+        }
+        quizBrain.nextQuestion();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +81,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: const EdgeInsets.all(10),
             child: Center(
               child: Text(
-                questionBank[questionNum].questionText,
+                quizBrain.getQuestionText(),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 25,
@@ -70,25 +96,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: const EdgeInsets.all(15),
             child: TextButton(
               onPressed: () {
-                bool correctAnswer = questionBank[questionNum].questionAnswer;
-                if (correctAnswer == true) {
-                  scoreKeeper.add(
-                    const Icon(
-                      Icons.check,
-                      color: Colors.green,
-                    ),
-                  );
-                } else {
-                  scoreKeeper.add(
-                    const Icon(
-                      Icons.close,
-                      color: Colors.red,
-                    ),
-                  );
-                }
-                setState(() {
-                  questionNum = questionNum + 1;
-                });
+                checkAnswer(true);
               },
               child: const Text(
                 'True',
@@ -108,25 +116,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: const EdgeInsets.all(15),
             child: TextButton(
               onPressed: () {
-                bool correctAnswer = questionBank[questionNum].questionAnswer;
-                if (correctAnswer == false) {
-                  scoreKeeper.add(
-                    const Icon(
-                      Icons.check,
-                      color: Colors.green,
-                    ),
-                  );
-                } else {
-                  scoreKeeper.add(
-                    const Icon(
-                      Icons.close,
-                      color: Colors.red,
-                    ),
-                  );
-                }
-                setState(() {
-                  questionNum = questionNum + 1;
-                });
+                checkAnswer(false);
               },
               child: const Text(
                 'False',
