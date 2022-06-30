@@ -11,6 +11,7 @@ void main() {
           backgroundColor: Colors.red,
         ),
         body: const DicePage(),
+
       ),
     ),
   );
