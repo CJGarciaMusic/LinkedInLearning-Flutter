@@ -2,7 +2,7 @@
     package="com.CJGarciaMusic.bmi_calculator">
    <application
         android:label="bmi_calculator"
-        android:name="${bmi_calculator}"
+        android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

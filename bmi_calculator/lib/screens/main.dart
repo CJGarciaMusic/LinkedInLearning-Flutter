@@ -1,14 +1,17 @@
-import 'package:bmi_calculator/reusable_card.dart';
+import 'package:bmi_calculator/components/reusable_card.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'icon_content.dart';
-import 'reusable_card.dart';
-import 'constants.dart';
+import '../components/icon_content.dart';
+import '../components/reusable_card.dart';
+import '../constants.dart';
+import 'result_page.dart';
+import '../components/bottom_button.dart';
+import '../components/round_button.dart';
+import 'package:bmi_calculator/calculator_brain.dart';
 
 enum Sex {
   male,
   female,
-  neither,
 }
 
 void main() {
@@ -199,37 +202,21 @@ class _InputPageState extends State<InputPage> {
               )),
             ],
           )),
-          Container(
-            color: kBottomContainerColor,
-            margin: const EdgeInsets.only(top: 10),
-            width: double.infinity,
-            height: kBottomContainerHeight,
-          )
+          BottomButton(
+            buttonTitle: "CALCULATE",
+            onTap: () {
+              CalculatorBrain calc = CalculatorBrain(weight: weight, height: height);
+
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return ResultPage(
+                  bmiResults: calc.calculateBMI(),
+                  resultText: calc.getResult(),
+                  interpretation: calc.getInterpretation() ,);
+              }));
+            },)
         ]
       )
       );
   }
 }
 
-
-class RoundIconButton extends StatelessWidget {
-  const RoundIconButton({Key? key, required this.icon, required this.onPressed}) : super(key: key);
-
-  final IconData icon;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(
-      child: Icon(icon, color: Colors.white,),
-      shape: const CircleBorder(),
-        fillColor: const Color(0xFF4C4f5E),
-      constraints: const BoxConstraints.tightFor(
-        width: 56,
-        height: 56,
-      ),
-      elevation: 6,
-      onPressed: onPressed,
-    );
-  }
-}
