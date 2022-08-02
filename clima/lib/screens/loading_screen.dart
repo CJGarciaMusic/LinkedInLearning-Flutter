@@ -27,7 +27,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     WeatherModel weatherModel = WeatherModel();
     var weatherData = await weatherModel.getLocationWeather();
 
-    // wtf - need WidgesBinding wrap, found here: https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
+    // wtf - need WidgetBinding wrap, found here: https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return LocationScreen(locationWeather: weatherData,);
