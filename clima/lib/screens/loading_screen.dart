@@ -2,6 +2,7 @@ import 'package:clima/screens/location_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:clima/services/weather.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:geolocator/geolocator.dart';
 
 
 class LoadingScreen extends StatefulWidget {
@@ -15,6 +16,7 @@ class LoadingScreen extends StatefulWidget {
 
 class _LoadingScreenState extends State<LoadingScreen> {
 
+  // late LocationPermission permission;
 
   @override
   void initState(){
@@ -23,10 +25,15 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   void getLocationData() async {
+    // permission = await Geolocator.checkPermission();
+    // if (permission == LocationPermission.denied) {
+    //   permission = await Geolocator.requestPermission();
+    //   if (permission == LocationPermission.denied) {
+    //     return Future.error('Location Permissions are denied');
+    //   }
+    // }
 
-    WeatherModel weatherModel = WeatherModel();
-    var weatherData = await weatherModel.getLocationWeather();
-
+    var weatherData = await WeatherModel().getLocationWeather();
     // wtf - need WidgetBinding wrap, found here: https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Navigator.push(context, MaterialPageRoute(builder: (context) {

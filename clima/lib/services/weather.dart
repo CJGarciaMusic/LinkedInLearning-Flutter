@@ -4,11 +4,19 @@ import 'package:clima/services/networking.dart';
 const apiKey = '3775f375b82493b4ceb45526021e72ac';
 
 class WeatherModel {
+
+  Future<dynamic> getCityWeather(String cityName) async {
+    NetworkHelper networkHelper = NetworkHelper(0, 0, apiKey, cityName);
+
+    var weatherData = await networkHelper.getData();
+    return weatherData;
+  }
+
   Future<dynamic> getLocationWeather() async {
     Location location = Location();
     await location.getCurrentLocation();
 
-    NetworkHelper networkHelper = NetworkHelper(location.latitude, location.longitude, apiKey);
+    NetworkHelper networkHelper = NetworkHelper(location.latitude, location.longitude, apiKey, '');
 
     var weatherData = await networkHelper.getData();
     return weatherData;
