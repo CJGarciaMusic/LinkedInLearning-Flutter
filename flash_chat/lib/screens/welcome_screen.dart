@@ -2,6 +2,7 @@ import 'package:flash_chat/screens/login_screen.dart';
 import 'package:flash_chat/screens/registration_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flash_chat/components/rounded_button.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -79,40 +80,24 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
             const SizedBox(
               height: 48,
             ),
-            Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-              child: Material(
-                elevation: 5,
-                color: Colors.lightBlueAccent,
-                borderRadius: BorderRadius.circular(30),
-                child: MaterialButton(
+            Hero(
+              tag: 'login',
+              child: RoundedButton(
+                  color: Colors.lightBlueAccent,
+                  title: 'Log In',
                   onPressed: () {
                     Navigator.pushNamed(context, LoginScreen.id);
-                  },
-                  minWidth: 200,
-                  height: 42,
-                  child: const Text(
-                    'Log In',
-                  ),
-                )
-              )
+                  }
+              ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: Material(
+            Hero(
+              tag: 'register',
+              child: RoundedButton(
                 color: Colors.blueAccent,
-                borderRadius: BorderRadius.circular(30),
-                elevation: 5,
-                child: MaterialButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, RegistrationScreen.id);
-                  },
-                  minWidth: 200,
-                  height: 42,
-                  child: const Text(
-                    'Register',
-                  ),
-                ),
+                title: 'Register',
+                onPressed: () {
+                  Navigator.pushNamed(context, RegistrationScreen.id);
+                },
               ),
             ),
           ],
@@ -121,3 +106,4 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
     );
   }
 }
+

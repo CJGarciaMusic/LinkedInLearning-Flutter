@@ -1,3 +1,4 @@
+import 'package:flash_chat/components/rounded_button.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -88,23 +89,13 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(
               height: 24,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: Material(
-                color: Colors.lightBlueAccent,
-                borderRadius: const BorderRadius.all(Radius.circular(30)),
-                elevation: 5,
-                child: MaterialButton(
-                  onPressed: () {
-                    //Implement login functionality.
-                  },
-                  minWidth: 200,
-                  height: 42,
-                  child: const Text(
-                    'Log In',
-                  ),
-                ),
-              ),
+            Hero(
+                tag: 'login',
+                child: RoundedButton(
+                  color: Colors.lightBlueAccent,
+                  title: 'Log In',
+                  onPressed: () {print("gonna need a login function");},
+                )
             ),
           ],
         ),
