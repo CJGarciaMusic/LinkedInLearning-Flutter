@@ -38,23 +38,6 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-
-
-  // void getMessages() async {
-  //   final messages = await _firestore.collection('messages').get();
-  //   for (var message in messages.docs) {
-  //     print(message.data());
-  //   }
-  // }
-
-  void messageStream() async {
-    await for (var snapshot in _firestore.collection('messages').snapshots()) {
-      for (var message in snapshot.docs) {
-        print(message.data());
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,10 +47,7 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
               icon: const Icon(Icons.close),
               onPressed: () {
-                messageStream();
-                // getMessages();
-                // _auth.signOut();
-                // Navigator.pop(context);
+                _auth.signOut();
               }),
         ],
         title: const Text('⚡️Chat'),
@@ -137,7 +117,7 @@ class MessagesStream extends StatelessWidget {
             ),
           );
         }
-        final messages = snapshot.data?.docs;
+        final messages = snapshot.data?.docs.reversed;
         for (var message in messages!) {
           final messageText = message['text'];
           final messageSender = message['sender'];
@@ -155,6 +135,7 @@ class MessagesStream extends StatelessWidget {
         }
         return Expanded(
           child: ListView(
+            reverse: true,
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
             children: messageBubbles,
           ),
@@ -178,7 +159,7 @@ class MessageBubble extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Text(
             sender,
@@ -189,17 +170,19 @@ class MessageBubble extends StatelessWidget {
           ),
           Material(
             elevation: 5,
-            borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(30),
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30)),
+            borderRadius: BorderRadius.only(
+                topLeft: isMe ? const Radius.circular(30) : const Radius.circular(0),
+                bottomLeft: const Radius.circular(30),
+                bottomRight: const Radius.circular(30),
+                topRight: isMe ? const Radius.circular(0) : const Radius.circular(30),
+            ),
             color: isMe ? Colors.lightBlueAccent : Colors.white,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
                 child: Text(
                   text,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: isMe ? Colors.white : Colors.black54,
                   ),
                 ),
               ),
